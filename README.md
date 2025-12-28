@@ -1,4 +1,4 @@
-# Meshtastic card (WORK IN PROGRESS!)
+# Meshtastic card
 
 [![GH-release](https://img.shields.io/github/v/release/hamper/meshtastic-card.svg?style=flat-square)](https://github.com/hamper/meshtastic-card/releases)
 [![GH-last-commit](https://img.shields.io/github/last-commit/hamper/meshtastic-card.svg?style=flat-square)](https://github.com/hamper/meshtastic-card/commits/main)
@@ -19,7 +19,7 @@ The card is linked to the Meshtastic custom components. <https://github.com/mesh
 
 ### HACS (Recommended)
 
-[![HACS](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=hamper&repository=meshtastic-card&category=dashboard)
+[![HACS](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=hamper&repository=meshtastic-card&category=plugin)
 
 1. Open HACS in your Home Assistant instance
 2. Click the menu icon in the top right and select "Custom repositories"

@@ -1,6 +1,6 @@
 {
   "name": "meshtastic-card",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Meshtastic card for Home Assistant Lovelace UI",
   "main": "index.js",
   "scripts": {
