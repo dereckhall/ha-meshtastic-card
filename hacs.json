@@ -1,4 +1,5 @@
 {
   "name": "Meshtastic Card",
+  "filename": "meshtastic-card.js",
   "render_readme": true
 }
