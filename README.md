@@ -1,30 +1,40 @@
 # Meshtastic card
 
-[![GH-release](https://img.shields.io/github/v/release/hamper/meshtastic-card.svg?style=flat-square)](https://github.com/hamper/meshtastic-card/releases)
-[![GH-last-commit](https://img.shields.io/github/last-commit/hamper/meshtastic-card.svg?style=flat-square)](https://github.com/hamper/meshtastic-card/commits/main)
+[![GH-release](https://img.shields.io/github/v/release/dereckhall/ha-meshtastic-card.svg?style=flat-square)](https://github.com/dereckhall/ha-meshtastic-card/releases)
+[![GH-last-commit](https://img.shields.io/github/last-commit/dereckhall/ha-meshtastic-card.svg?style=flat-square)](https://github.com/dereckhall/ha-meshtastic-card/commits/main)
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg?style=flat-square)](https://github.com/hacs)
 
-The card is linked to the Meshtastic custom components. <https://github.com/meshtastic/home-assistant>
+A Home Assistant Lovelace card for monitoring Meshtastic LoRa mesh network nodes. Requires the [Meshtastic integration](https://github.com/dereckhall/ha-meshtastic).
+
+## Features
+
+- Node identity (short name, long name, hardware model, firmware version)
+- Device uptime
+- Battery level with charging indicator
+- Channel utilization and airtime progress bars
+- Device voltage
+- **Expandable online nodes list** - click the online/total nodes count to reveal a list of all online node names with relative last-heard times
+- Network traffic counters (sent, received, relayed, canceled, duplicate, malformed)
 
 ## Screenshots
 
-![meshtastic-card](https://raw.githubusercontent.com/hamper/meshtastic-card/master/examples/card-configuration.png)
+![meshtastic-card](https://raw.githubusercontent.com/dereckhall/ha-meshtastic-card/main/examples/card-configuration.png)
 
 ## Installation
 
 ### Prerequisites
 
 > [!WARNING]
-> Before using this card, please ensure you have the [Meshtastic integration](https://github.com/meshtastic/home-assistant) installed in your Home Assistant instance.
+> Before using this card, please ensure you have the [Meshtastic integration](https://github.com/dereckhall/ha-meshtastic) installed in your Home Assistant instance.
 
 ### HACS (Recommended)
 
-[![HACS](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=hamper&repository=meshtastic-card&category=plugin)
+[![HACS](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=dereckhall&repository=ha-meshtastic-card&category=plugin)
 
 1. Open HACS in your Home Assistant instance
 2. Click the menu icon in the top right and select "Custom repositories"
 3. Add this repository URL and select "Dashboard" as the category
-   - `https://github.com/hamper/meshtastic-card`
+   - `https://github.com/dereckhall/ha-meshtastic-card`
 4. Click "Install"
 
 ### Manual Installation
@@ -72,10 +82,11 @@ If you're unsure what your Meshtastic device ID is, here are several ways to fin
 
 #### Method 2: Devices Page
 
-1. Go to **Settings** → **Devices & Services** → **Devices**
+1. Go to **Settings** -> **Devices & Services** -> **Devices**
 2. Search for "Meshtastic" or browse to find your Meshtastic device
 3. Click on the device and look at the URL - the device ID will be in the URL path
 
 ## Acknowledgments
 
 - Built using [LitElement](https://lit.dev/)
+- Based on [hamper/meshtastic-card](https://github.com/hamper/meshtastic-card)
