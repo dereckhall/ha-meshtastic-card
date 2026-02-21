@@ -9,7 +9,13 @@ class MeshtasticCard extends LitElement {
     return {
       hass: {},
       config: {},
+      _nodesExpanded: { type: Boolean },
     };
+  }
+
+  constructor() {
+    super();
+    this._nodesExpanded = false;
   }
 
   static getConfigForm() {
@@ -60,6 +66,35 @@ class MeshtasticCard extends LitElement {
     const h = Math.floor((s % 86400) / 3600);
     const m = Math.floor((s % 3600) / 60);
     return `${d > 0 ? d + 'd ' : ''}${h > 0 ? h + 'h ' : ''}${m}m`;
+  }
+
+  _formatRelativeTime(utcString) {
+    const match = utcString.match(/(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2}) UTC/);
+    if (!match) return utcString;
+    const then = Date.UTC(match[1], match[2] - 1, match[3], match[4], match[5], match[6]);
+    const diffSec = Math.floor((Date.now() - then) / 1000);
+    if (diffSec < 60) return "just now";
+    const m = Math.floor(diffSec / 60);
+    if (m < 60) return `${m} min ago`;
+    const h = Math.floor(m / 60);
+    const rm = m % 60;
+    if (h < 24) return rm > 0 ? `${h}h ${rm}min ago` : `${h}h ago`;
+    const d = Math.floor(h / 24);
+    return `${d}d ${h % 24}h ago`;
+  }
+
+  _parseOnlineNodes(stateObj) {
+    const list = stateObj?.attributes?.online_nodes;
+    if (!Array.isArray(list)) return [];
+    return list.map(entry => {
+      const match = entry.match(/^(.+?) \(last heard: (.+)\)$/);
+      if (!match) return { name: entry, ago: "" };
+      return { name: match[1], ago: this._formatRelativeTime(match[2]) };
+    });
+  }
+
+  _toggleNodes() {
+    this._nodesExpanded = !this._nodesExpanded;
   }
 
   _renderBar(label, stateObj, icon, color, showPower = false, isPowered = false) {
@@ -117,8 +152,26 @@ class MeshtasticCard extends LitElement {
 
         <div class="secondary-stats">
             <div class="sec-item"><ha-icon icon="mdi:flash-outline"></ha-icon> ${voltage?.state}V</div>
-            <div class="sec-item"><ha-icon icon="mdi:antenna"></ha-icon> ${this._getState("nodes_online")?.state}/${this._getState("nodes_total")?.state} Nodes</div>
+            <div class="sec-item nodes-toggle" @click=${this._toggleNodes}>
+              <ha-icon icon="mdi:antenna"></ha-icon>
+              ${this._getState("nodes_online")?.state}/${this._getState("nodes_total")?.state} Nodes
+              <ha-icon icon="mdi:chevron-${this._nodesExpanded ? 'up' : 'down'}" class="chevron"></ha-icon>
+            </div>
         </div>
+
+        ${this._nodesExpanded ? html`
+          <div class="nodes-list">
+            ${this._parseOnlineNodes(this._getState("nodes_online")).map(node => html`
+              <div class="node-row">
+                <span class="node-row-name">${node.name}</span>
+                <span class="node-row-ago">${node.ago}</span>
+              </div>
+            `)}
+            ${this._parseOnlineNodes(this._getState("nodes_online")).length === 0 ? html`
+              <div class="node-row"><span class="node-row-name" style="opacity: 0.5">No online nodes</span></div>
+            ` : ""}
+          </div>
+        ` : ""}
 
         <div class="traffic-section">
           <div class="traffic-header">NETWORK TRAFFIC</div>
@@ -162,6 +215,15 @@ class MeshtasticCard extends LitElement {
       .secondary-stats { display: flex; justify-content: space-around; font-size: 0.85em; padding: 8px 0; border-top: 1px solid var(--divider-color); }
       .sec-item { display: flex; align-items: center; gap: 4px; }
       .sec-item ha-icon { --mdc-icon-size: 16px; color: var(--secondary-text-color); }
+      .nodes-toggle { cursor: pointer; user-select: none; }
+      .nodes-toggle:hover { opacity: 0.7; }
+      .chevron { --mdc-icon-size: 14px; margin-left: 2px; }
+
+      .nodes-list { background: var(--secondary-background-color); border-radius: 8px; padding: 8px 10px; margin-top: 8px; display: flex; flex-direction: column; gap: 4px; }
+      .node-row { display: flex; justify-content: space-between; align-items: center; font-size: 0.78em; padding: 3px 0; border-bottom: 1px solid var(--divider-color); }
+      .node-row:last-child { border-bottom: none; }
+      .node-row-name { font-weight: 500; }
+      .node-row-ago { opacity: 0.5; font-size: 0.9em; }
 
       .traffic-section { background: var(--secondary-background-color); padding: 10px; border-radius: 8px; margin-top: 8px; }
       .traffic-header { font-size: 0.65em; font-weight: bold; letter-spacing: 1px; margin-bottom: 8px; opacity: 0.5; }
