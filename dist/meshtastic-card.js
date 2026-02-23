@@ -156,6 +156,10 @@
       const bad = this._getState("packets_rx_bad")?.state || 0;
       const dup = this._getState("packets_rx_duplicate")?.state || 0;
 
+      const nodesOnlineState = this._getState("nodes_online");
+      const onlineNodesList = this._parseOnlineNodes(nodesOnlineState);
+      const onlineCount = onlineNodesList.length || nodesOnlineState?.state || 0;
+
       return b`
       <ha-card>
         <div class="header">
@@ -179,20 +183,20 @@
             <div class="sec-item"><ha-icon icon="mdi:flash-outline"></ha-icon> ${voltage?.state}V</div>
             <div class="sec-item nodes-toggle" @click=${this._toggleNodes}>
               <ha-icon icon="mdi:antenna"></ha-icon>
-              ${this._getState("nodes_online")?.state}/${this._getState("nodes_total")?.state} Nodes
+              ${onlineCount}/${this._getState("nodes_total")?.state} Nodes
               <ha-icon icon="mdi:chevron-${this._nodesExpanded ? 'up' : 'down'}" class="chevron"></ha-icon>
             </div>
         </div>
 
         ${this._nodesExpanded ? b`
           <div class="nodes-list">
-            ${this._parseOnlineNodes(this._getState("nodes_online")).map(node => b`
+            ${onlineNodesList.map(node => b`
               <div class="node-row">
                 <span class="node-row-name">${node.name}</span>
                 <span class="node-row-ago">${node.ago}</span>
               </div>
             `)}
-            ${this._parseOnlineNodes(this._getState("nodes_online")).length === 0 ? b`
+            ${onlineNodesList.length === 0 ? b`
               <div class="node-row"><span class="node-row-name" style="opacity: 0.5">No online nodes</span></div>
             ` : ""}
           </div>
