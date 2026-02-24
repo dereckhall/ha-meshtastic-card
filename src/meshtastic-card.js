@@ -62,9 +62,17 @@ class MeshtasticCard extends LitElement {
     return found ? this.hass.states[found.entity_id] : null;
   }
 
-  _formatUptime(seconds) {
-    const s = parseInt(seconds) || 0;
-    if (s === 0) return "N/A";
+  _formatUptime(stateObj) {
+    if (!stateObj || !stateObj.state || stateObj.state === "unknown" || stateObj.state === "unavailable") return "N/A";
+    const val = parseFloat(stateObj.state);
+    if (!val || val <= 0) return "N/A";
+    const unit = stateObj.attributes?.unit_of_measurement || "s";
+    let s;
+    if (unit === "d") s = val * 86400;
+    else if (unit === "h") s = val * 3600;
+    else if (unit === "min") s = val * 60;
+    else s = val;
+    s = Math.round(s);
     const d = Math.floor(s / 86400);
     const h = Math.floor((s % 86400) / 3600);
     const m = Math.floor((s % 3600) / 60);
@@ -165,7 +173,7 @@ class MeshtasticCard extends LitElement {
               @click=${this._refreshNodes}
               title="${this._refreshCooldown ? 'Refresh available every 5 minutes' : 'Refresh node list'}"
             ></ha-icon>
-            <div class="uptime-badge">${this._formatUptime(this._getState("device_uptime")?.state)}</div>
+            <div class="uptime-badge">${this._formatUptime(this._getState("device_uptime"))}</div>
           </div>
         </div>
 
