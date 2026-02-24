@@ -221,9 +221,9 @@ class MeshtasticCard extends LitElement {
       .long-name { font-weight: normal; font-size: 0.8em; opacity: 0.6; }
       .hw-version { font-size: 0.7em; opacity: 0.5; margin-top: 2px; }
       .header-right { display: flex; align-items: center; gap: 8px; }
-      .refresh-btn { --mdc-icon-size: 18px; cursor: pointer; opacity: 0.5; transition: opacity 0.2s; }
+      .refresh-btn { --mdc-icon-size: 20px; cursor: pointer; opacity: 0.8; transition: opacity 0.2s; }
       .refresh-btn:hover { opacity: 1; }
-      .refresh-btn.cooldown { opacity: 0.15; cursor: not-allowed; }
+      .refresh-btn.cooldown { opacity: 0.3; cursor: not-allowed; }
       .uptime-badge { font-size: 0.75em; background: var(--secondary-background-color); padding: 2px 8px; border-radius: 10px; font-family: monospace; }
 
       .main-stats { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
