@@ -35,12 +35,15 @@
         hass: {},
         config: {},
         _nodesExpanded: { type: Boolean },
+        _refreshCooldown: { type: Boolean },
       };
     }
 
     constructor() {
       super();
       this._nodesExpanded = false;
+      this._refreshCooldown = false;
+      this._lastRefresh = 0;
     }
 
     static getConfigForm() {
@@ -122,6 +125,16 @@
       this._nodesExpanded = !this._nodesExpanded;
     }
 
+    _refreshNodes() {
+      const now = Date.now();
+      const cooldownMs = 5 * 60 * 1000;
+      if (now - this._lastRefresh < cooldownMs) return;
+      this._lastRefresh = now;
+      this._refreshCooldown = true;
+      this.hass.callService("meshtastic", "refresh_nodes", {});
+      setTimeout(() => { this._refreshCooldown = false; }, cooldownMs);
+    }
+
     _renderBar(label, stateObj, icon, color, showPower = false, isPowered = false) {
       const val = parseFloat(stateObj?.state) || 0;
       return b`
@@ -170,7 +183,15 @@
             </div>
             <div class="hw-version">${device?.model} • v${device?.sw_version}</div>
           </div>
-          <div class="uptime-badge">${this._formatUptime(this._getState("device_uptime")?.state)}</div>
+          <div class="header-right">
+            <ha-icon
+              icon="mdi:refresh"
+              class="refresh-btn ${this._refreshCooldown ? 'cooldown' : ''}"
+              @click=${this._refreshNodes}
+              title="${this._refreshCooldown ? 'Refresh available every 5 minutes' : 'Refresh node list'}"
+            ></ha-icon>
+            <div class="uptime-badge">${this._formatUptime(this._getState("device_uptime")?.state)}</div>
+          </div>
         </div>
 
         <div class="main-stats">
@@ -224,6 +245,10 @@
       .node-name { font-size: 1.1em; font-weight: bold; }
       .long-name { font-weight: normal; font-size: 0.8em; opacity: 0.6; }
       .hw-version { font-size: 0.7em; opacity: 0.5; margin-top: 2px; }
+      .header-right { display: flex; align-items: center; gap: 8px; }
+      .refresh-btn { --mdc-icon-size: 18px; cursor: pointer; opacity: 0.5; transition: opacity 0.2s; }
+      .refresh-btn:hover { opacity: 1; }
+      .refresh-btn.cooldown { opacity: 0.15; cursor: not-allowed; }
       .uptime-badge { font-size: 0.75em; background: var(--secondary-background-color); padding: 2px 8px; border-radius: 10px; font-family: monospace; }
 
       .main-stats { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
