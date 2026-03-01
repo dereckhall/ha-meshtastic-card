@@ -123,9 +123,13 @@
       const list = stateObj?.attributes?.online_nodes;
       if (!Array.isArray(list)) return [];
       return list.map(entry => {
-        const match = entry.match(/^(.+?) \(last heard: (.+)\)$/);
-        if (!match) return { name: entry, ago: "" };
-        return { name: match[1], ago: this._formatRelativeTime(match[2]) };
+        const match = entry.match(/^(.+?) \((?:hops: (\d+), )?last heard: (.+)\)$/);
+        if (!match) return { name: entry, hops: null, ago: "" };
+        return {
+          name: match[1],
+          hops: match[2] != null ? parseInt(match[2], 10) : null,
+          ago: this._formatRelativeTime(match[3]),
+        };
       });
     }
 
@@ -222,6 +226,9 @@
             ${onlineNodesList.map(node => b`
               <div class="node-row">
                 <span class="node-row-name">${node.name}</span>
+                ${node.hops != null ? b`
+                  <span class="node-row-hops">${node.hops === 0 ? 'direct' : node.hops + (node.hops === 1 ? ' hop' : ' hops')}</span>
+                ` : ''}
                 <span class="node-row-ago">${node.ago}</span>
               </div>
             `)}
@@ -282,10 +289,11 @@
       .chevron { --mdc-icon-size: 14px; margin-left: 2px; }
 
       .nodes-list { background: var(--secondary-background-color); border-radius: 8px; padding: 8px 10px; margin-top: 8px; display: flex; flex-direction: column; gap: 4px; }
-      .node-row { display: flex; justify-content: space-between; align-items: center; font-size: 0.78em; padding: 3px 0; border-bottom: 1px solid var(--divider-color); }
+      .node-row { display: flex; justify-content: space-between; align-items: center; font-size: 0.78em; padding: 3px 0; border-bottom: 1px solid var(--divider-color); gap: 8px; }
       .node-row:last-child { border-bottom: none; }
-      .node-row-name { font-weight: 500; }
-      .node-row-ago { opacity: 0.5; font-size: 0.9em; }
+      .node-row-name { font-weight: 500; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+      .node-row-hops { font-size: 0.85em; opacity: 0.6; background: var(--primary-color, #03a9f4); color: var(--text-primary-color, #fff); padding: 1px 6px; border-radius: 8px; white-space: nowrap; flex-shrink: 0; }
+      .node-row-ago { opacity: 0.5; font-size: 0.9em; white-space: nowrap; flex-shrink: 0; }
 
       .traffic-section { background: var(--secondary-background-color); padding: 10px; border-radius: 8px; margin-top: 8px; }
       .traffic-header { font-size: 0.65em; font-weight: bold; letter-spacing: 1px; margin-bottom: 8px; opacity: 0.5; }
