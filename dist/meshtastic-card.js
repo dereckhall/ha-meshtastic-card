@@ -196,13 +196,10 @@
             <div class="hw-version">${device?.model} • v${device?.sw_version}</div>
           </div>
           <div class="header-right">
-            <ha-icon
-              icon="mdi:refresh"
-              class="refresh-btn ${this._refreshCooldown ? 'cooldown' : ''}"
-              @click=${this._refreshNodes}
-              title="${this._refreshCooldown ? 'Refresh available every 5 minutes' : 'Refresh node list'}"
-            ></ha-icon>
-            <div class="uptime-badge">${this._formatUptime(this._getState("device_uptime"))}</div>
+            <div class="uptime-badge ${this._refreshCooldown ? 'cooldown' : ''}" @click=${this._refreshNodes} title="${this._refreshCooldown ? 'Refresh available every 5 minutes' : 'Refresh node list'}">
+              <ha-icon icon="mdi:refresh" class="uptime-refresh-icon"></ha-icon>
+              ${this._formatUptime(this._getState("device_uptime"))}
+            </div>
           </div>
         </div>
 
@@ -261,10 +258,10 @@
       .long-name { font-weight: normal; font-size: 0.8em; opacity: 0.6; }
       .hw-version { font-size: 0.7em; opacity: 0.5; margin-top: 2px; }
       .header-right { display: flex; align-items: center; gap: 8px; }
-      .refresh-btn { --mdc-icon-size: 20px; cursor: pointer; opacity: 0.8; transition: opacity 0.2s; }
-      .refresh-btn:hover { opacity: 1; }
-      .refresh-btn.cooldown { opacity: 0.3; cursor: not-allowed; }
-      .uptime-badge { font-size: 0.75em; background: var(--secondary-background-color); padding: 2px 8px; border-radius: 10px; font-family: monospace; }
+      .uptime-badge { font-size: 0.75em; background: var(--secondary-background-color); padding: 2px 8px; border-radius: 10px; font-family: monospace; cursor: pointer; display: flex; align-items: center; gap: 4px; transition: opacity 0.2s; user-select: none; }
+      .uptime-badge:hover { opacity: 0.7; }
+      .uptime-badge.cooldown { opacity: 0.4; cursor: not-allowed; }
+      .uptime-refresh-icon { --mdc-icon-size: 14px; }
 
       .main-stats { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
       .stat-bar { display: flex; flex-direction: column; gap: 2px; }
