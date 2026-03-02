@@ -289,14 +289,14 @@
       .chevron { --mdc-icon-size: 14px; margin-left: 2px; }
 
       .nodes-list { background: var(--secondary-background-color); border-radius: 8px; padding: 8px 10px; margin-top: 8px; display: flex; flex-direction: column; gap: 4px; }
-      .node-row { display: flex; justify-content: space-between; align-items: center; font-size: 0.78em; padding: 3px 0; border-bottom: 1px solid var(--divider-color); gap: 8px; }
+      .node-row { display: grid; grid-template-columns: 1fr 55px 70px; align-items: center; font-size: 0.78em; padding: 3px 0; border-bottom: 1px solid var(--divider-color); gap: 8px; }
       .node-row:last-child { border-bottom: none; }
-      .node-row-name { font-weight: 500; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-      .node-row-hops { font-size: 0.85em; color: #fff; padding: 1px 6px; border-radius: 8px; white-space: nowrap; flex-shrink: 0; min-width: 50px; text-align: center; }
+      .node-row-name { font-weight: 500; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+      .node-row-hops { font-size: 0.85em; color: #fff; padding: 1px 6px; border-radius: 8px; white-space: nowrap; text-align: center; }
       .hops-direct { background: #4caf50; }
       .hops-near { background: #ff9800; }
       .hops-far { background: #f44336; }
-      .node-row-ago { opacity: 0.5; font-size: 0.9em; white-space: nowrap; flex-shrink: 0; }
+      .node-row-ago { opacity: 0.5; font-size: 0.9em; white-space: nowrap; text-align: right; }
 
       .traffic-section { background: var(--secondary-background-color); padding: 10px; border-radius: 8px; margin-top: 8px; }
       .traffic-header { font-size: 0.65em; font-weight: bold; letter-spacing: 1px; margin-bottom: 8px; opacity: 0.5; }
