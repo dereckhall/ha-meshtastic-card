@@ -203,7 +203,7 @@ class MeshtasticCard extends LitElement {
                 <span class="node-row-name">${node.name}</span>
                 ${node.hops != null ? html`
                   <span class="node-row-hops ${node.hops === 0 ? 'hops-direct' : node.hops <= 2 ? 'hops-near' : 'hops-far'}">${node.hops === 0 ? 'direct' : node.hops + (node.hops === 1 ? ' hop' : ' hops')}</span>
-                ` : ''}
+                ` : html`<span></span>`}
                 <span class="node-row-ago">${node.ago}</span>
               </div>
             `)}
