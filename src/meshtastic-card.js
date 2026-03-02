@@ -131,7 +131,7 @@ class MeshtasticCard extends LitElement {
             <ha-icon icon="${icon}"></ha-icon> ${label}
             ${showPower && isPowered ? html`<ha-icon icon="mdi:flash" class="charging-icon"></ha-icon>` : ""}
           </span>
-          <span class="stat-value">${val}${stateObj?.attributes.unit_of_measurement || ""}</span>
+          <span class="stat-value">${Math.round(val * 10) / 10}${stateObj?.attributes.unit_of_measurement || ""}</span>
         </div>
         <div class="bar-bg"><div class="bar-fill" style="width: ${Math.min(val, 100)}%; background-color: ${color}"></div></div>
       </div>
