@@ -227,7 +227,7 @@
               <div class="node-row">
                 <span class="node-row-name">${node.name}</span>
                 ${node.hops != null ? b`
-                  <span class="node-row-hops">${node.hops === 0 ? 'direct' : node.hops + (node.hops === 1 ? ' hop' : ' hops')}</span>
+                  <span class="node-row-hops ${node.hops === 0 ? 'hops-direct' : node.hops <= 2 ? 'hops-near' : 'hops-far'}">${node.hops === 0 ? 'direct' : node.hops + (node.hops === 1 ? ' hop' : ' hops')}</span>
                 ` : ''}
                 <span class="node-row-ago">${node.ago}</span>
               </div>
@@ -292,7 +292,10 @@
       .node-row { display: flex; justify-content: space-between; align-items: center; font-size: 0.78em; padding: 3px 0; border-bottom: 1px solid var(--divider-color); gap: 8px; }
       .node-row:last-child { border-bottom: none; }
       .node-row-name { font-weight: 500; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-      .node-row-hops { font-size: 0.85em; opacity: 0.6; background: var(--primary-color, #03a9f4); color: var(--text-primary-color, #fff); padding: 1px 6px; border-radius: 8px; white-space: nowrap; flex-shrink: 0; }
+      .node-row-hops { font-size: 0.85em; color: #fff; padding: 1px 6px; border-radius: 8px; white-space: nowrap; flex-shrink: 0; min-width: 50px; text-align: center; }
+      .hops-direct { background: #4caf50; }
+      .hops-near { background: #ff9800; }
+      .hops-far { background: #f44336; }
       .node-row-ago { opacity: 0.5; font-size: 0.9em; white-space: nowrap; flex-shrink: 0; }
 
       .traffic-section { background: var(--secondary-background-color); padding: 10px; border-radius: 8px; margin-top: 8px; }
