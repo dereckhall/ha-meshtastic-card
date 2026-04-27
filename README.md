@@ -18,7 +18,7 @@ A Home Assistant Lovelace card for monitoring Meshtastic LoRa mesh network nodes
 
 ## Screenshots
 
-![meshtastic-card](https://raw.githubusercontent.com/dereckhall/ha-meshtastic-card/main/examples/card-configuration.png)
+![meshtastic-card](https://i.dereck.org/CapturePush_2026-04-26_23-15-18_6422.jpg)
 
 ## Installation
 
